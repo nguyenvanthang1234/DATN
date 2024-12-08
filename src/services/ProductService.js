@@ -37,3 +37,15 @@ export const getAllTypeProduct = async () => {
   const res = await axios.get(url);
   return res.data;
 };
+
+export const getSuggestedProducts = async (search) => {
+  try {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/suggestions?search=${search}`);
+
+    // Axios đã tự động phân tích cú pháp JSON nên bạn có thể trả về trực tiếp res.data
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
+    throw error; // Thêm lỗi để có thể xử lý khi gọi hàm này
+  }
+};

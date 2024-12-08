@@ -18,8 +18,8 @@ const HomePage = () => {
   const searchDebounce = useDebounce(searchProduct, 500);
   const [loading, setLoading] = useState(false);
   const [limit, setLimit] = useState(12);
-
   const [typeProducts, setTypeProducts] = useState([]);
+  const [suggestedProducts, setSuggestedProducts] = useState([]); // Thêm state gợi ý
 
   const fetchProductAll = async (context) => {
     const limit = context?.queryKey && context?.queryKey[1];
@@ -34,6 +34,15 @@ const HomePage = () => {
       setTypeProducts(res?.data);
     }
   };
+
+  const fetchSuggestions = async (search) => {
+    if (!search) return;
+    const res = await ProductService.getSuggestedProducts(search);
+    if (res?.status === "OK") {
+      setSuggestedProducts(res?.data);
+    }
+  };
+
   const {
     isLoading,
     data: products,
@@ -46,7 +55,8 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchAllTypeProduct();
-  }, []);
+    fetchSuggestions(searchDebounce); // Lấy gợi ý mỗi khi thay đổi từ khóa
+  }, [searchDebounce]);
 
   return (
     <Loading isLoading={isLoading || loading}>
@@ -74,11 +84,12 @@ const HomePage = () => {
               alignItems: "center",
               flexWrap: "wrap",
               gap: "30px",
+              justifyContent: "center",
             }}
           >
             <WrapperProduct>
-              {products?.data.map((product) => {
-                return (
+              {products?.data?.length > 0 ? (
+                products?.data.map((product) => (
                   <CardComponent
                     key={product._id}
                     countInStock={product.countInStock}
@@ -92,10 +103,58 @@ const HomePage = () => {
                     discount={product.discount}
                     id={product._id}
                   />
-                );
-              })}
+                ))
+              ) : (
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "#999",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Sản phẩm không tồn tại
+                </div>
+              )}
             </WrapperProduct>
           </div>
+
+          {/* Hiển thị gợi ý sản phẩm */}
+          {products?.data?.length === 0 && suggestedProducts?.length > 0 ? (
+            <div
+              style={{
+                marginTop: "40px",
+                textAlign: "center",
+              }}
+            >
+              <h3>Sản phẩm bán chạy nhất </h3>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  gap: "20px",
+                }}
+              >
+                {suggestedProducts.map((product) => (
+                  <CardComponent
+                    key={product._id}
+                    countInStock={product.countInStock}
+                    description={product.description}
+                    image={product.image}
+                    name={product.name}
+                    price={product.price}
+                    rating={product.rating}
+                    type={product.type}
+                    selled={product.selled}
+                    discount={product.discount}
+                    id={product._id}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div
             style={{
               display: "flex",
