@@ -123,7 +123,7 @@ const ProductDetailComponent = ({ idProduct }) => {
           <WrapperProductName>{ProductDetails?.name}</WrapperProductName>
           <div>
             <Rate allowHalf defaultValue={ProductDetails?.rating} value={ProductDetails?.rating}></Rate>
-            <WrapperStyleTextSell>1000</WrapperStyleTextSell>
+            <WrapperStyleTextSell>Sản phẩm trong kho :{ProductDetails?.countInStock}</WrapperStyleTextSell>
           </div>
 
           <WrapperPriceProduct>
