@@ -45,6 +45,7 @@ const MyOrderPage = () => {
 
   const mutation = useMutationHooks((data) => {
     const { id, token, orderItems, userId } = data;
+
     const res = OrderService.cancelOrder(id, token, orderItems, userId);
     return res;
   });
@@ -58,7 +59,14 @@ const MyOrderPage = () => {
         },
       }
     );
+    console.log("Cancel order params:", {
+      id: order._id,
+      token: state?.token,
+      orderItems: order?.orderItems,
+      userId: user.id,
+    });
   };
+
   const { isLoading: isLoadingCancel, isSuccess: isSuccessCancel, isError: isErrorCancel, data: dataCancel } = mutation;
 
   useEffect(() => {

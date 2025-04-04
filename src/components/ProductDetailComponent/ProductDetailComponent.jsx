@@ -79,7 +79,7 @@ const ProductDetailComponent = ({ idProduct }) => {
 
   const handleAddOrderProduct = () => {
     if (!user?.id) {
-      navigate("/sign-in", { state: location?.pathname });
+      navigate("/signIn", { state: location?.pathname });
     } else {
       const orderRedux = order?.orderItems?.find((item) => item.product === ProductDetails?._id);
       if (

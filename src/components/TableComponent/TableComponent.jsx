@@ -35,15 +35,20 @@ const TableComponent = ({
   };
 
   const exportExcel = () => {
-    const excel = new Excel();
-    excel
-      .addSheet("test")
-      .addColumns(newColumnExport)
-      .addDataSource(dataSource, {
-        str2Percent: true,
-      })
-      .saveAs("Excel.xlsx")
-      .then(() => alert("File Excel đã được lưu!"));
+    try {
+      const excel = new Excel();
+      excel
+        .addSheet("test")
+        .addColumns(newColumnExport)
+        .addDataSource(dataSource, {
+          str2Percent: true,
+        })
+        .saveAs("Excel.xlsx");
+      alert("File Excel đã được lưu!");
+    } catch (error) {
+      console.error("Lỗi khi xuất Excel:", error);
+      alert("Đã xảy ra lỗi khi xuất Excel.");
+    }
   };
 
   return (

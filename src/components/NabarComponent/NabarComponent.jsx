@@ -55,7 +55,7 @@ const NavbarComponent = () => {
   return (
     <div>
       <WrapperLabText>label</WrapperLabText>
-      <WrapperContent>{renderContent("text", ["Lap Top", "TV", "Phone"])}</WrapperContent>
+      <WrapperContent>{renderContent("text", ["Lap Top", "Ipad", "Iphone"])}</WrapperContent>
     </div>
   );
 };
